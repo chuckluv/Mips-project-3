@@ -125,3 +125,16 @@ num:
 	beq $t3, 0, combine	# if there are no charaters left that mean the exponent is zero
 	li $t9, 30		
 	j exp
+upper:
+	
+	sub $s0, $s0, 55 #converts uppercase bits
+	beq $t3, 0, combine # if there are no charaters left that mean the exponent is zero
+	li $t9, 30
+	j exp
+
+lower:
+	
+	sub $s0, $s0, 87 #converts lowercase bits
+	beq $t3, 0, combine # if there are no charaters left that mean the exponent is zero
+	li $t9, 30
+	j exp
