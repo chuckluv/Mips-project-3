@@ -100,3 +100,15 @@ substring:
 	beq $s0,44, invalidloop #checks if the next bit is a comma
 	li $t2,0 #resets my space/tabs checker back to zero
 	j loop
+
+SubprogramB:
+	beq $t3,0,finish #check how many charcter are left to convert 
+	addi $t3,$t3,-1 #decreases the amount of charaters left to convert
+	lb $a0, ($t4) # loads the bit that will be converted
+	
+	addi $t4,$t4,1	# moves to the next element in the array
+	j SubprogramC 
+continue:
+	
+	sw $v0,0($sp)	#stores the converted number
+	j SubprogramB
