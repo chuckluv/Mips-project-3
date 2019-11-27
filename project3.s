@@ -138,3 +138,15 @@ lower:
 	beq $t3, 0, combine # if there are no charaters left that mean the exponent is zero
 	li $t9, 30
 	j exp
+exp:
+	#raises my base to a certain exponent by muliplying itself repeatly
+	ble $t8, 1, combine	#if the exponet is 1 there is no need to multiply the base by itself
+	mul $t9, $t9, 30 	# multpling my base by itself to simulate raising the number to a power
+	addi $t8, $t8, -1	# decreasing the exponent
+	j exp
+combine:
+	mul $s2, $t9, $s0	#multiplied the converted bit and my base raised to a power
+	
+	add $s1,$s1,$s2		# adding the coverted numbers together 
+	move $v0, $s1
+	j continue
