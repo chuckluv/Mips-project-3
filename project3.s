@@ -84,3 +84,19 @@ insubstring:
 	li $t3,0 #resets the amount of valid characters back to 0
 	li $t2,0 #resets my space/tabs checker back to zero
 	j loop
+substring:
+	bgt $t2,0,insubstring #checks to see if there were any spaces or tabs in between valid characters
+	bge $t3,5,insubstring #checks to see if there are more than 4 for characters
+	addi $t1,$t1,1 #check track of the amount substring 	
+	sub $sp, $sp,4# creates space in the stack
+	sw $t6, 0($sp) #stores what was in $t6 into the stack
+	move $t6,$t0  # store the pointer to the bit after the comma
+	lw $t4,0($sp) #loads what was in the stack at that posistion into $t4
+	li $s1,0 #sets $s1 to 0 
+	jal SubprogramB
+	lb $s0, ($t0) # loads the bit that $t0 is pointing to
+	beq $s0, 0, continue1# check if the bit is null
+	beq $s0, 10, continue1#checks if the bit is a new line 
+	beq $s0,44, invalidloop #checks if the next bit is a comma
+	li $t2,0 #resets my space/tabs checker back to zero
+	j loop
