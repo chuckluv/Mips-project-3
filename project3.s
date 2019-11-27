@@ -112,3 +112,16 @@ continue:
 	
 	sw $v0,0($sp)	#stores the converted number
 	j SubprogramB
+SubprogramC:
+	move $s0,$a0
+	move $t8, $t3	#stores the amount of characters left to use as an exponent
+	li $t9, 1	# $t9 represents 30 to a certian power and set equal to 1
+	ble $s0, 57, num #sorts the bit to the apporiate function
+	ble $s0, 84, upper
+	ble $s0, 116, lower
+num:
+	
+	sub $s0, $s0, 48	#converts interger bits 
+	beq $t3, 0, combine	# if there are no charaters left that mean the exponent is zero
+	li $t9, 30		
+	j exp
