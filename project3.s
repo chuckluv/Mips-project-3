@@ -23,7 +23,8 @@ First:
 	li $t2,0 
 	li $t7, -1 
 	lb $s0, ($t0) 
-	
+	beq $s0, 0, insubstring# check if the bit is null
+	beq $s0, 10, insubstring #checks if the bit is a new line 
 	beq $s0, 9, pass 
 	beq $s0, 32, pass 
 	move $t6, $t0 
@@ -36,8 +37,8 @@ load:
 	
 	
 	lb $s0, ($t0) 
-	beq $s0, 0, substring
-	beq $s0, 10, substring  	
+	beq $s0, 0, end
+	beq $s0, 10, end 	
 	addi $t0,$t0,1 	
 	beq $s0, 44, substring 
 sort:
@@ -85,7 +86,11 @@ insubstring:
 	li $t3,0 
 	li $t2,0 
 	j load
+
+
 substring:
+	mul $t2,$t2,$t7 
+end:
 	bgt $t2,0,insubstring 
 	bge $t3,5,insubstring 
 	addi $t1,$t1,1  	
