@@ -6,13 +6,14 @@
 .text
 main :
 	li $v0,8	
-	la $a0,data	#reads user input 
+	la $a0,data	
 	li $a1, 1001
 	syscall
 	jal SubprogramA 
-return:
-	j print #jumps to print function
+
+	j print 
 SubprogramA:
+	move$s6, $ra
 	sub $sp, $sp,4 
 	sw $a0, 0($sp) 
 	lw $t0, 0($sp) 
@@ -22,7 +23,7 @@ First:
 	li $t2,0 
 	li $t7, -1 
 	lb $s0, ($t0) 
-	#beq $s0, 0, finish
+	
 	beq $s0, 9, pass 
 	beq $s0, 32, pass 
 	move $t6, $t0 
@@ -78,8 +79,8 @@ insubstring:
 	
 	move $t6,$t0  
 	lb $s0, ($t0) 
-	beq $s0, 0, return
-	beq $s0, 10, return 
+	beq $s0, 0, finish2
+	beq $s0, 10, finish2 
 	beq $s0,44, invalidloop 
 	li $t3,0 
 	li $t2,0 
@@ -95,24 +96,27 @@ substring:
 	li $s1,0  
 	jal SubprogramB
 	lb $s0, ($t0) 
-	beq $s0, 0, return
-	beq $s0, 10, return
+	beq $s0, 0, finish2
+	beq $s0, 10, finish2
 	beq $s0,44, invalidloop 
 	li $t2,0 
 	j load
 
 SubprogramB:
+	move$s4, $ra
+bit:
 	beq $t3,0,finish  
 	addi $t3,$t3,-1 
 	lb $a0, ($t4) 
 	
 	addi $t4,$t4,1	
-	j SubprogramC 
-continue:
+	jal SubprogramC 
+
 	
 	sw $v0,0($sp)	
-	j SubprogramB
+	j bit
 SubprogramC:
+	move$s5, $ra
 	move $s0,$a0
 	move $t8, $t3	
 	li $t9, 1	
@@ -149,9 +153,17 @@ combine:
 	
 	add $s1,$s1,$s2		 
 	move $v0, $s1
-	j continue
+	j finish1
 
-finish : jr $ra	
+finish : 
+move $ra, $s4
+jr $ra	
+finish1 :
+move $ra, $s5 
+jr $ra	
+finish2 : 
+move $ra, $s6,
+jr $ra	
 
 print:
 	mul $t1,$t1,4 
