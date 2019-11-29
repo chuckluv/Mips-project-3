@@ -25,6 +25,7 @@ First:
 	lb $s0, ($t0) 
 	beq $s0, 0, insubstring# check if the bit is null
 	beq $s0, 10, insubstring #checks if the bit is a new line 
+	beq $s0, 44, invalidloop #check if bit is a comma
 	beq $s0, 9, pass 
 	beq $s0, 32, pass 
 	move $t6, $t0 
@@ -40,7 +41,7 @@ load:
 	beq $s0, 0, end
 	beq $s0, 10, end 	
 	addi $t0,$t0,1 	
-	beq $s0, 44, substring 
+	beq $s0, 44, end 
 sort:
 	bgt $t2,0,invalidloop 
 	beq $s0, 9,  gap 
@@ -85,7 +86,7 @@ insubstring:
 	beq $s0,44, invalidloop 
 	li $t3,0 
 	li $t2,0 
-	j load
+	j First
 
 
 substring:
@@ -105,7 +106,7 @@ end:
 	beq $s0, 10, finish2
 	beq $s0,44, invalidloop 
 	li $t2,0 
-	j load
+	j First
 
 SubprogramB:
 	move$s4, $ra
